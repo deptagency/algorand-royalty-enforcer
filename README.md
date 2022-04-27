@@ -6,13 +6,14 @@ This implementation adds various tests and some additional checks.
 
 TODO:
 
-- [ ] Finalize enforcer contract implementation
+- [x] Implement enforcer contract and tests
+- [ ] Implement marketplace contract and tests
 - [ ] Build script
 - [ ] Setup automated deploy/release workflows
-- [ ] Implement marketplace contract
-- [ ] Additional test cases
 - [ ] Perform third-party audits
 - [ ] Address any issues that come up from audits
+- [ ] Additional test cases
+- [ ] Finalize contract implementations
 
 ## Requirements
 
