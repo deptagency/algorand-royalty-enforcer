@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "royalty-arc18"
+version = "0.1.0"
+description = ""
+authors = ["DEPT <opensource@deptagency.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+py-algorand-sdk = "^1.12.0"
+pyteal = { git = "https://github.com/algorand/pyteal.git", branch = "feature/abi" }
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
