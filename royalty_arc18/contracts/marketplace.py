@@ -1,11 +1,13 @@
 from pyteal import *
 
+
 class Keys:
     app = Bytes("app")
     asset = Bytes("asset")
     price = Bytes("price")
     amount = Bytes("amount")
     account = Bytes("account")
+
 
 class Selectors:
     list = MethodSignature("list(asset,application,uint64,uint64,appl)void")

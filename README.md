@@ -51,7 +51,11 @@ poetry install # install dependencies
 > When running tests, be sure to run the Algorand Sandbox in the default "SandNet" mode. The tests assume Algod and KMD are available with the default URLs, ports, and tokens.
 
 ```bash
+# outside of poetry shell
 poetry run pytest -n auto
+
+# inside poetry shell
+pytest -n auto
 ```
 
 [python]: https://www.python.org/

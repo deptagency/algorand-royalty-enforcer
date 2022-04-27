@@ -1,5 +1,4 @@
 from pyteal import *
-from typing import Literal
 
 
 class Keys:
@@ -38,13 +37,15 @@ class Selectors:
         "royalty_free_move(asset,uint64,account,account,uint64)void"
     )
 
-#region Administrator
+
+# region Administrator
+
 
 @Subroutine(TealType.bytes)
 def administrator():
     return Seq(
         (admin := App.globalGetEx(Int(0), Keys.administrator)),
-        If(admin.hasValue(), admin.value(), Global.creator_address())
+        If(admin.hasValue(), admin.value(), Global.creator_address()),
     )
 
 
@@ -58,10 +59,7 @@ def set_administrator():
 
 @Subroutine(TealType.uint64)
 def put_administrator(admin: Expr):
-    return Seq(
-        App.globalPut(Keys.administrator, admin),
-        Int(1)
-    )
+    return Seq(App.globalPut(Keys.administrator, admin), Int(1))
 
 
 @Subroutine(TealType.uint64)
@@ -69,12 +67,14 @@ def get_administrator():
     return Seq(
         (admin := abi.Address()).decode(administrator()),
         abi.MethodReturn(admin),
-        Int(1)
+        Int(1),
     )
 
-#endregion
 
-#region Offer
+# endregion
+
+# region Offer
+
 
 @Subroutine(TealType.uint64)
 def extract_offer_amount(offer):
@@ -103,7 +103,12 @@ def offer():
         Assert(And(cb.hasValue(), cb.value() == Global.current_application_address())),
         # Set the auth addr for this asset
         update_offered(
-            Txn.sender(), Itob(asset_id), auth_acct, asset_amt, expected_auth, expected_amt
+            Txn.sender(),
+            Itob(asset_id),
+            auth_acct,
+            asset_amt,
+            expected_auth,
+            expected_amt,
         ),
         Int(1),
     )
@@ -148,17 +153,19 @@ def get_offer():
         Int(1),
     )
 
-#endregion
 
-#region Policy
+# endregion
+
+# region Policy
+
 
 @Subroutine(TealType.bytes)
-def royalty_receiver():
+def get_royalty_receiver():
     return App.globalGet(Keys.royalty_receiver)
 
 
 @Subroutine(TealType.uint64)
-def royalty_basis():
+def get_royalty_basis():
     return App.globalGet(Keys.royalty_basis)
 
 
@@ -181,16 +188,18 @@ def set_policy():
 @Subroutine(TealType.uint64)
 def get_policy():
     return Seq(
-        (addr := abi.Address()).decode(royalty_receiver()),
-        (amt := abi.Uint64()).set(royalty_basis()),
+        (addr := abi.Address()).decode(get_royalty_receiver()),
+        (amt := abi.Uint64()).set(get_royalty_basis()),
         (ret := abi.Tuple(abi.AddressTypeSpec(), abi.Uint64TypeSpec())).set(addr, amt),
         abi.MethodReturn(ret),
         Int(1),
     )
 
-#endregion
 
-#region Payment asset
+# endregion
+
+# region Payment asset
+
 
 @Subroutine(TealType.uint64)
 def set_payment_asset():
@@ -241,13 +250,17 @@ def set_payment_asset():
         Int(1),
     )
 
-#endregion
 
-#region Transfer
+# endregion
+
+# region Transfer
+
 
 @Subroutine(TealType.uint64)
 def royalty_amount(payment_amt, royalty_basis):
-    return WideRatio([payment_amt, royalty_basis], [Int(Constants.basis_point_multiplier)])
+    return WideRatio(
+        [payment_amt, royalty_basis], [Int(Constants.basis_point_multiplier)]
+    )
 
 
 @Subroutine(TealType.none)
@@ -354,7 +367,7 @@ def transfer():
     offer_auth = extract_offer_auth(offer)
     offer_amt = extract_offer_amount(offer)
 
-    royalty_acct = ScratchVar(TealType.bytes)
+    royalty_receiver = ScratchVar(TealType.bytes)
     royalty_basis = ScratchVar(TealType.uint64)
 
     valid_transfer_group = And(
@@ -384,7 +397,7 @@ def transfer():
                 purchase_txn.receiver() == Global.current_application_address(),
             ),
         ),
-        expected_royalty_acct == royalty_acct.load(),
+        expected_royalty_acct == royalty_receiver.load(),
     )
 
     return Seq(
@@ -395,8 +408,8 @@ def transfer():
         Assert(owner_auth.value() == Global.zero_address()),
         Assert(buyer_auth.value() == Global.zero_address()),
         # Grab the royalty policy settings
-        royalty_acct.store(royalty_receiver()),
-        royalty_basis.store(royalty_basis()),
+        royalty_receiver.store(get_royalty_receiver()),
+        royalty_basis.store(get_royalty_basis()),
         # Make sure transactions look right
         Assert(valid_transfer_group),
         # Make sure all txn fees are covered (move asset + two payment txns)
@@ -473,7 +486,8 @@ def royalty_free_move():
         Int(1),
     )
 
-#endregion
+
+# endregion
 
 
 def approval():
@@ -481,7 +495,10 @@ def approval():
 
     action_router = Cond(
         [
-            And(Txn.application_args[0] == Selectors.royalty_free_move, from_administrator),
+            And(
+                Txn.application_args[0] == Selectors.royalty_free_move,
+                from_administrator,
+            ),
             royalty_free_move(),
         ],
         [
@@ -489,11 +506,17 @@ def approval():
             set_policy(),
         ],
         [
-            And(Txn.application_args[0] == Selectors.set_payment_asset, from_administrator),
+            And(
+                Txn.application_args[0] == Selectors.set_payment_asset,
+                from_administrator,
+            ),
             set_payment_asset(),
         ],
         [
-            And(Txn.application_args[0] == Selectors.set_administrator, from_administrator),
+            And(
+                Txn.application_args[0] == Selectors.set_administrator,
+                from_administrator,
+            ),
             set_administrator(),
         ],
         [Txn.application_args[0] == Selectors.transfer, transfer()],
@@ -505,8 +528,14 @@ def approval():
 
     return Cond(
         [Txn.application_id() == Int(0), Return(put_administrator(Txn.sender()))],
-        [Txn.on_completion() == OnComplete.DeleteApplication, Return(from_administrator)],
-        [Txn.on_completion() == OnComplete.UpdateApplication, Return(from_administrator)],
+        [
+            Txn.on_completion() == OnComplete.DeleteApplication,
+            Return(from_administrator),
+        ],
+        [
+            Txn.on_completion() == OnComplete.UpdateApplication,
+            Return(from_administrator),
+        ],
         [Txn.on_completion() == OnComplete.OptIn, Approve()],
         [Txn.on_completion() == OnComplete.CloseOut, Approve()],
         [Txn.on_completion() == OnComplete.NoOp, Return(action_router)],
@@ -525,6 +554,7 @@ def compile_enforcer_approval():
         optimize=OptimizeOptions(scratch_slots=True),
     )
 
+
 def compile_enforcer_clear():
     return compileTeal(
         clear(),
@@ -532,6 +562,7 @@ def compile_enforcer_clear():
         version=6,
         optimize=OptimizeOptions(scratch_slots=True),
     )
+
 
 if __name__ == "__main__":
     # TODO: write teal contracts to files
