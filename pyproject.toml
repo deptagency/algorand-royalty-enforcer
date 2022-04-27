@@ -8,9 +8,10 @@ authors = ["DEPT <opensource@deptagency.com>"]
 python = "^3.10"
 py-algorand-sdk = "^1.12.0"
 pyteal = { git = "https://github.com/algorand/pyteal.git", branch = "feature/abi" }
+pytest-xdist = "^2.5.0"
 
 [tool.poetry.dev-dependencies]
-pytest = "^5.2"
+pytest = "^7.1.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
