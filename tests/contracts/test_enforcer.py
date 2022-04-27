@@ -15,7 +15,7 @@ ZERO_ADDR = encoding.encode_address(bytes(32))
 
 
 with open("assets/enforcer_abi.json") as f:
-    enforcer_iface = Interface.from_json(f.read())
+    enforcer_abi = Interface.from_json(f.read())
 
 
 def fullyCompileContract(client: AlgodClient, teal: str) -> bytes:
@@ -119,7 +119,7 @@ def test_set_policy():
     atc = AtomicTransactionComposer()
     atc.add_method_call(
         enforcerID,
-        get_method(enforcer_iface, "set_policy"),
+        get_method(enforcer_abi, "set_policy"),
         creator.getAddress(),
         sp,
         creator_signer,
@@ -131,7 +131,7 @@ def test_set_policy():
     atc = AtomicTransactionComposer()
     atc.add_method_call(
         enforcerID,
-        get_method(enforcer_iface, "get_policy"),
+        get_method(enforcer_abi, "get_policy"),
         creator.getAddress(),
         sp,
         creator_signer,
@@ -164,7 +164,7 @@ def test_set_administrator():
     atc = AtomicTransactionComposer()
     atc.add_method_call(
         enforcerID,
-        get_method(enforcer_iface, "set_administrator"),
+        get_method(enforcer_abi, "set_administrator"),
         creator.getAddress(),
         sp,
         creator_signer,
@@ -176,7 +176,7 @@ def test_set_administrator():
     atc = AtomicTransactionComposer()
     atc.add_method_call(
         enforcerID,
-        get_method(enforcer_iface, "get_administrator"),
+        get_method(enforcer_abi, "get_administrator"),
         creator.getAddress(),
         sp,
         creator_signer,
@@ -207,7 +207,7 @@ def test_create_offer():
     atc = AtomicTransactionComposer()
     atc.add_method_call(
         enforcer_id,
-        get_method(enforcer_iface, "set_policy"),
+        get_method(enforcer_abi, "set_policy"),
         creator.getAddress(),
         sp,
         creator_signer,
@@ -236,7 +236,7 @@ def test_create_offer():
     atc = AtomicTransactionComposer()
     atc.add_method_call(
         enforcer_id,
-        get_method(enforcer_iface, "offer"),
+        get_method(enforcer_abi, "offer"),
         creator.getAddress(),
         sp,
         creator_signer,
@@ -249,7 +249,7 @@ def test_create_offer():
     atc = AtomicTransactionComposer()
     atc.add_method_call(
         enforcer_id,
-        get_method(enforcer_iface, "get_offer"),
+        get_method(enforcer_abi, "get_offer"),
         creator.getAddress(),
         sp,
         creator_signer,
@@ -276,7 +276,7 @@ def test_royalty_free_move():
     atc = AtomicTransactionComposer()
     atc.add_method_call(
         enforcer_id,
-        get_method(enforcer_iface, "set_policy"),
+        get_method(enforcer_abi, "set_policy"),
         creator.getAddress(),
         sp,
         creator_signer,
@@ -305,7 +305,7 @@ def test_royalty_free_move():
     atc = AtomicTransactionComposer()
     atc.add_method_call(
         enforcer_id,
-        get_method(enforcer_iface, "offer"),
+        get_method(enforcer_abi, "offer"),
         creator.getAddress(),
         sp,
         creator_signer,
@@ -336,7 +336,7 @@ def test_royalty_free_move():
     atc = AtomicTransactionComposer()
     atc.add_method_call(
         enforcer_id,
-        get_method(enforcer_iface, "royalty_free_move"),
+        get_method(enforcer_abi, "royalty_free_move"),
         creator.getAddress(),
         sp,
         creator_signer,
@@ -367,7 +367,7 @@ def test_transfer():
     atc = AtomicTransactionComposer()
     atc.add_method_call(
         enforcer_id,
-        get_method(enforcer_iface, "set_policy"),
+        get_method(enforcer_abi, "set_policy"),
         creator.getAddress(),
         sp,
         creator_signer,
@@ -396,7 +396,7 @@ def test_transfer():
     atc = AtomicTransactionComposer()
     atc.add_method_call(
         enforcer_id,
-        get_method(enforcer_iface, "offer"),
+        get_method(enforcer_abi, "offer"),
         creator.getAddress(),
         sp,
         creator_signer,
@@ -436,7 +436,7 @@ def test_transfer():
     atc = AtomicTransactionComposer()
     atc.add_method_call(
         enforcer_id,
-        get_method(enforcer_iface, "transfer"),
+        get_method(enforcer_abi, "transfer"),
         buyer.getAddress(),
         sp,
         buyer_signer,

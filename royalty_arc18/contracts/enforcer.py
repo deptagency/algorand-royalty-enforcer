@@ -77,12 +77,12 @@ def get_administrator():
 #region Offer
 
 @Subroutine(TealType.uint64)
-def offered_amount(offer):
+def extract_offer_amount(offer):
     return ExtractUint64(offer, Int(32))
 
 
 @Subroutine(TealType.bytes)
-def offered_auth(offer):
+def extract_offer_auth(offer):
     return Extract(offer, Int(0), Int(32))
 
 
@@ -90,11 +90,9 @@ def offered_auth(offer):
 def offer():
     asset_id = Txn.assets[Btoi(Txn.application_args[1])]
     asset_amt = Btoi(Txn.application_args[2])
-
     auth_acct = Txn.application_args[3]
-    prev_amt = Btoi(Txn.application_args[4])
-
-    prev_auth = Txn.application_args[5]
+    expected_amt = Btoi(Txn.application_args[4])
+    expected_auth = Txn.application_args[5]
 
     return Seq(
         cb := AssetParam.clawback(asset_id),
@@ -105,26 +103,26 @@ def offer():
         Assert(And(cb.hasValue(), cb.value() == Global.current_application_address())),
         # Set the auth addr for this asset
         update_offered(
-            Txn.sender(), Itob(asset_id), auth_acct, asset_amt, prev_auth, prev_amt
+            Txn.sender(), Itob(asset_id), auth_acct, asset_amt, expected_auth, expected_amt
         ),
         Int(1),
     )
 
 
 @Subroutine(TealType.none)
-def update_offered(acct, asset, auth, amt, prev_auth, prev_amt):
+def update_offered(acct, asset, auth, amt, expected_auth, expected_amt):
     return Seq(
-        previous := App.localGetEx(acct, Int(0), asset),
+        current_offer := App.localGetEx(acct, Int(0), asset),
         # If we had something before, make sure its the same as what was passed. Otherwise make sure that a 0 was passed
         If(
-            previous.hasValue(),
+            current_offer.hasValue(),
             Assert(
                 And(
-                    offered_amount(previous.value()) == prev_amt,
-                    offered_auth(previous.value()) == prev_auth,
+                    extract_offer_amount(current_offer.value()) == expected_amt,
+                    extract_offer_auth(current_offer.value()) == expected_auth,
                 )
             ),
-            Assert(And(prev_amt == Int(0), prev_auth == Global.zero_address())),
+            Assert(And(expected_amt == Int(0), expected_auth == Global.zero_address())),
         ),
         # Now consider the new offer, if its 0 this is a delete, otherwise update
         If(
@@ -143,8 +141,8 @@ def get_offer():
     return Seq(
         stored_offer := App.localGetEx(offering_acct, Int(0), offered_asset),
         Assert(stored_offer.hasValue()),
-        (addr := abi.Address()).decode(offered_auth(stored_offer.value())),
-        (amt := abi.Uint64()).set(offered_amount(stored_offer.value())),
+        (addr := abi.Address()).decode(extract_offer_auth(stored_offer.value())),
+        (amt := abi.Uint64()).set(extract_offer_amount(stored_offer.value())),
         (ret := abi.Tuple(abi.AddressTypeSpec(), abi.Uint64TypeSpec())).set(addr, amt),
         abi.MethodReturn(ret),
         Int(1),
@@ -343,30 +341,30 @@ def transfer():
     asset_amt = Btoi(Txn.application_args[2])
     owner_acct = Txn.accounts[Btoi(Txn.application_args[3])]
     buyer_acct = Txn.accounts[Btoi(Txn.application_args[4])]
-    royalty_acct = Txn.accounts[Btoi(Txn.application_args[5])]
+    expected_royalty_acct = Txn.accounts[Btoi(Txn.application_args[5])]
     purchase_txn = Gtxn[Txn.group_index() - Int(1)]
     # Unused, just passed in args to let the app have access in foreign assets
     # asset_idx  = Txn.application_args[6]
-    curr_offered_amt = Btoi(Txn.application_args[7])
+    expected_offer_amt = Btoi(Txn.application_args[7])
 
     # Get the auth_addr from local state of the owner
     # If its not present, a 0 is returned and the call fails when we try
     # to compare to the bytes of Txn.sender
     offer = App.localGet(owner_acct, Itob(asset_id))
-    offer_auth_addr = offered_auth(offer)
-    offer_amt = offered_amount(offer)
+    offer_auth = extract_offer_auth(offer)
+    offer_amt = extract_offer_amount(offer)
 
-    stored_royalty_recv = ScratchVar(TealType.bytes)
-    stored_royalty_basis = ScratchVar(TealType.uint64)
+    royalty_acct = ScratchVar(TealType.bytes)
+    royalty_basis = ScratchVar(TealType.uint64)
 
     valid_transfer_group = And(
         Global.group_size() == Int(2),
         # App call sent by authorizing address
-        Txn.sender() == offer_auth_addr,
+        Txn.sender() == offer_auth,
         # No funny business
         purchase_txn.rekey_to() == Global.zero_address(),
         # payment txn should be from auth
-        purchase_txn.sender() == offer_auth_addr,
+        purchase_txn.sender() == offer_auth,
         # transfer amount <= offered amount
         asset_amt <= offer_amt,
         # Passed the correct account according to the policy
@@ -386,7 +384,7 @@ def transfer():
                 purchase_txn.receiver() == Global.current_application_address(),
             ),
         ),
-        royalty_acct == stored_royalty_recv.load(),
+        expected_royalty_acct == royalty_acct.load(),
     )
 
     return Seq(
@@ -397,8 +395,8 @@ def transfer():
         Assert(owner_auth.value() == Global.zero_address()),
         Assert(buyer_auth.value() == Global.zero_address()),
         # Grab the royalty policy settings
-        stored_royalty_recv.store(royalty_receiver()),
-        stored_royalty_basis.store(royalty_basis()),
+        royalty_acct.store(royalty_receiver()),
+        royalty_basis.store(royalty_basis()),
         # Make sure transactions look right
         Assert(valid_transfer_group),
         # Make sure all txn fees are covered (move asset + two payment txns)
@@ -410,14 +408,14 @@ def transfer():
                 purchase_txn.xfer_asset(),
                 purchase_txn.asset_amount(),
                 owner_acct,
-                royalty_acct,
-                stored_royalty_basis.load(),
+                expected_royalty_acct,
+                royalty_basis.load(),
             ),
             pay_algos(
                 purchase_txn.amount(),
                 owner_acct,
-                royalty_acct,
-                stored_royalty_basis.load(),
+                expected_royalty_acct,
+                royalty_basis.load(),
             ),
         ),
         # Perform asset move
@@ -426,10 +424,10 @@ def transfer():
         update_offered(
             owner_acct,
             Itob(asset_id),
-            offer_auth_addr,
+            offer_auth,
             offer_amt - asset_amt,
             Txn.sender(),
-            curr_offered_amt,
+            expected_offer_amt,
         ),
         Int(1),
     )
@@ -443,22 +441,22 @@ def royalty_free_move():
     from_acct = Txn.accounts[Btoi(Txn.application_args[3])]
     to_acct = Txn.accounts[Btoi(Txn.application_args[4])]
 
-    prev_offered_amt = Btoi(Txn.application_args[5])
-    prev_offered_auth = Txn.sender()
+    expected_offer_amt = Btoi(Txn.application_args[5])
+    expected_offer_auth = Txn.sender()
 
     offer = App.localGet(from_acct, Itob(asset_id))
+    offer_amt = ScratchVar()
+    offer_auth = ScratchVar()
 
-    curr_offer_amt = ScratchVar()
-    curr_offer_auth = ScratchVar()
     return Seq(
-        curr_offer_amt.store(offered_amount(offer)),
-        curr_offer_auth.store(offered_auth(offer)),
+        offer_amt.store(extract_offer_amount(offer)),
+        offer_auth.store(extract_offer_auth(offer)),
         # Must match what is currently offered
-        Assert(curr_offer_amt.load() == prev_offered_amt),
-        Assert(curr_offer_auth.load() == prev_offered_auth),
+        Assert(offer_amt.load() == expected_offer_amt),
+        Assert(offer_auth.load() == expected_offer_auth),
         # Must be set to app creator and less than the amount to move
-        Assert(curr_offer_auth.load() == administrator()),
-        Assert(curr_offer_amt.load() <= asset_amt),
+        Assert(offer_auth.load() == administrator()),
+        Assert(offer_amt.load() <= asset_amt),
         # Txn fee must cover the cost of the move
         Assert(Txn.fee() >= Int(2000)),
         # Delete the offer
@@ -467,8 +465,8 @@ def royalty_free_move():
             Itob(asset_id),
             Bytes(""),
             Int(0),
-            prev_offered_auth,
-            prev_offered_amt,
+            expected_offer_auth,
+            expected_offer_amt,
         ),
         # Move it
         move_asset(asset_id, from_acct, to_acct, asset_amt),
