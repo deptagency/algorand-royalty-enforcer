@@ -42,6 +42,8 @@ poetry install # install dependencies
 
 ## Build contracts
 
+> TODO
+
 ```bash
 ./build.sh
 ```
@@ -52,11 +54,13 @@ poetry install # install dependencies
 
 ```bash
 # outside of poetry shell
-poetry run pytest -n auto
+poetry run pytest
 
 # inside poetry shell
-pytest -n auto
+pytest
 ```
+
+Add `-n 4` to run tests in parallel using the desired number of threads (or `-n auto` to use max).
 
 [python]: https://www.python.org/
 [poetry]: https://python-poetry.org/docs/
