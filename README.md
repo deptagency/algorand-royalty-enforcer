@@ -2,6 +2,10 @@
 
 Based on the example at https://github.com/algorand-devrel/royalty/
 
+Also see the ARC-18 pull request at https://github.com/algorandfoundation/ARCs/pull/70
+
+And the ARC-18 spec at https://github.com/barnjamin/ARCs/blob/royalty/ARCs/arc-0018.md
+
 This implementation adds various tests and some additional checks.
 
 TODO:
