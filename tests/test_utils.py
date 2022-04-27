@@ -4,7 +4,9 @@ from algosdk import encoding
 from algosdk.kmd import KMDClient
 from algosdk.v2client.algod import AlgodClient
 
-from royalty_arc18.utils import getAlgodClient, getGenesisAccounts, getKmdClient
+from royalty_arc18.utils.clients import getAlgodClient, getKmdClient
+from royalty_arc18.utils.accounts import getGenesisAccounts
+
 
 def test_getAlgodClient():
     client = getAlgodClient()
@@ -24,7 +26,8 @@ def test_getKmdClient():
 
 
 def test_getGenesisAccounts():
-    accounts = getGenesisAccounts()
+    client = getKmdClient()
+    accounts = getGenesisAccounts(client)
 
     assert len(accounts) == 3
     assert all(encoding.is_valid_address(account.getAddress()) for account in accounts)
