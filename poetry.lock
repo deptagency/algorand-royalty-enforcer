@@ -230,7 +230,7 @@ development = ["black (==22.3.0)", "flake8 (==4.0.1)", "flake8-tidy-imports (==4
 [package.source]
 type = "git"
 url = "https://github.com/algorand/pyteal.git"
-reference = "feature/abi"
+reference = "11f970a3"
 resolved_reference = "11f970a3136380f00cf57b78b3c0335dca4eb617"
 
 [[package]]
@@ -295,7 +295,7 @@ python-versions = ">=3.7"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "ba713761e31017ee577a785b41c2e987fdc897835e8e91890b957025e1cf9305"
+content-hash = "3805063eb9a499b204b41ff9512b5293685821f1191ca9ba0d9a8f4c0853f4e4"
 
 [metadata.files]
 atomicwrites = [
