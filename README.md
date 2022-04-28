@@ -11,7 +11,7 @@ This implementation adds various tests and some additional checks.
 TODO:
 
 - [x] Implement enforcer contract and tests
-- [ ] Implement marketplace contract for ALGO and tests
+- [x] Implement marketplace contract for ALGO and tests
 - [ ] Implement marketplace contract for generic ASA (e.g. USDC) and tests (or modify existing marketplace to support both)
 - [ ] Build script
 - [ ] Setup automated deploy/release workflows
