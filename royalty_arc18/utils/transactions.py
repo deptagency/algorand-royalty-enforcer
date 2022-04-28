@@ -1,7 +1,11 @@
 from base64 import b64decode
 from typing import Any, Dict, List, Optional
-from algosdk.v2client.algod import AlgodClient
+
+from algosdk.encoding import encode_address
 from algosdk.future.transaction import wait_for_confirmation
+from algosdk.v2client.algod import AlgodClient
+
+ZERO_ADDR = encode_address(bytes(32))
 
 
 class PendingTxnResponse:

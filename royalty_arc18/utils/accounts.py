@@ -5,6 +5,7 @@ from algosdk.atomic_transaction_composer import (
     AccountTransactionSigner,
     TransactionSigner,
 )
+from algosdk.encoding import decode_address
 from algosdk.future.transaction import PaymentTxn, Transaction, assign_group_id
 from algosdk.kmd import KMDClient
 from algosdk.mnemonic import from_private_key, to_private_key
@@ -21,6 +22,9 @@ class Account:
 
     def getAddress(self) -> str:
         return self.addr
+
+    def getDecodedAddress(self) -> bytes:
+        return decode_address(self.addr)
 
     def getPrivateKey(self) -> str:
         return self.sk
