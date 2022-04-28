@@ -560,5 +560,7 @@ def compile_enforcer_clear():
 
 
 if __name__ == "__main__":
-    # TODO: write teal contracts to files
-    pass
+    with open("assets/enforcer_approval.teal", "w") as f:
+        f.write(compile_enforcer_approval())
+    with open("assets/enforcer_clear.teal", "w") as f:
+        f.write(compile_enforcer_clear())

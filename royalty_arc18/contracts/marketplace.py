@@ -172,5 +172,7 @@ def compile_marketplace_clear():
 
 
 if __name__ == "__main__":
-    # TODO: write teal contracts to files
-    pass
+    with open("assets/marketplace_approval.teal", "w") as f:
+        f.write(compile_marketplace_approval())
+    with open("assets/marketplace_clear.teal", "w") as f:
+        f.write(compile_marketplace_clear())
