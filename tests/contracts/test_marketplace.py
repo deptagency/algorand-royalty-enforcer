@@ -1,9 +1,10 @@
 from algosdk.encoding import is_valid_address
-from royalty_arc18.utils.accounts import getTemporaryAccount
+from royalty_arc18.utils.accounts import getBalances, getTemporaryAccount
 from royalty_arc18.utils.apps import (
     deployEnforcer,
     deployMarketplace,
     getAppGlobalState,
+    marketplaceBuyNFT,
     marketplaceListNFT,
     setEnforcerPolicy,
 )
@@ -45,8 +46,37 @@ def test_list_nft():
 
 
 def test_buy_nft():
-    # TODO: implement
-    pass
+    client = getAlgodClient()
+    kmd = getKmdClient()
+    sender = getTemporaryAccount(client, kmd)
+    royalty = getTemporaryAccount(client, kmd)
+    buyer = getTemporaryAccount(client, kmd)
+
+    enforcer = deployEnforcer(client, sender)
+    marketplace = deployMarketplace(client, sender)
+    nftID = mintNFT(client, sender, enforcer.address)
+    basisPoints = 1000
+    amount = 1
+    price = 1_000_000
+
+    setEnforcerPolicy(client, enforcer, sender, basisPoints, royalty.getAddress())
+    marketplaceListNFT(client, enforcer, marketplace, sender, nftID, amount, price)
+    marketplaceBuyNFT(
+        client,
+        enforcer,
+        marketplace,
+        sender.getAddress(),
+        royalty.getAddress(),
+        buyer,
+        nftID,
+        amount,
+        price,
+    )
+
+    buyerBalances = getBalances(client, buyer.getAddress())
+    assert buyerBalances[nftID] == amount
+    sellerBalances = getBalances(client, sender.getAddress())
+    assert sellerBalances[nftID] == 0
 
 
 def test_delist_nft():

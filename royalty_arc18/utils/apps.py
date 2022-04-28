@@ -11,6 +11,7 @@ from algosdk.future.transaction import (
     OnComplete,
     PaymentTxn,
     StateSchema,
+    AssetOptInTxn,
 )
 from algosdk.abi import Interface
 from algosdk.logic import get_application_address
@@ -130,6 +131,24 @@ def deployMarketplace(client: AlgodClient, sender: Account) -> App:
     appID = response.applicationIndex
     assert appID is not None and appID > 0
     app = App(appID, marketplaceABI)
+
+    # Pay min balance to enforcer account and opt-in to contract to enable making offers
+    sp = client.suggested_params()
+    atc = AtomicTransactionComposer()
+
+    # Enforcer contract needs min balance to be able to send transactions
+    atc.add_transaction(
+        TransactionWithSigner(
+            txn=PaymentTxn(
+                sender=sender.getAddress(),
+                amt=int(1e6),
+                receiver=app.address,
+                sp=sp,
+            ),
+            signer=sender.getSigner(),
+        )
+    )
+    atc.execute(client, 2)
 
     return app
 
@@ -385,5 +404,58 @@ def marketplaceListNFT(
         sp=client.suggested_params(),
         signer=sender.getSigner(),
         method_args=[nftID, enforcer.id, amount, price, group[0]],
+    )
+    atc.execute(client, 2)
+
+
+def marketplaceBuyNFT(
+    client: AlgodClient,
+    enforcer: App,
+    marketplace: App,
+    sellerAddress: str,
+    royaltyAddress: str,
+    buyer: Account,
+    nftID: int,
+    amount: int,
+    price: int,
+):
+    atc = AtomicTransactionComposer()
+    paymentTxn = TransactionWithSigner(
+        txn=PaymentTxn(
+            sender=buyer.getAddress(),
+            sp=client.suggested_params(),
+            amt=price,
+            receiver=marketplace.address,
+        ),
+        signer=buyer.getSigner(),
+    )
+    atc.add_transaction(
+        TransactionWithSigner(
+            txn=AssetOptInTxn(
+                sender=buyer.getAddress(),
+                sp=client.suggested_params(),
+                index=nftID,
+            ),
+            signer=buyer.getSigner(),
+        )
+    )
+    sp = client.suggested_params()
+    # provide additional txn fee to pay for inner txns
+    sp.fee = 4000
+    atc.add_method_call(
+        app_id=marketplace.id,
+        method=marketplace.getMethod("buy"),
+        sender=buyer.getAddress(),
+        sp=sp,
+        signer=buyer.getSigner(),
+        method_args=[
+            nftID,
+            enforcer.id,
+            enforcer.address,
+            sellerAddress,
+            royaltyAddress,
+            amount,
+            paymentTxn,
+        ],
     )
     atc.execute(client, 2)

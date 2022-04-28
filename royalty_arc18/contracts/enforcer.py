@@ -211,7 +211,6 @@ def set_payment_asset():
     return Seq(
         bal := AssetHolding.balance(Global.current_application_address(), asset_id),
         creator := AssetParam.creator(asset_id),
-        Assert(Txn.fee() >= Int(2000)),
         If(And(is_allowed, Not(bal.hasValue())))
         .Then(
             # Opt in to asset
@@ -412,8 +411,6 @@ def transfer():
         royalty_basis.store(get_royalty_basis()),
         # Make sure transactions look right
         Assert(valid_transfer_group),
-        # Make sure all txn fees are covered (move asset + two payment txns)
-        Assert(Txn.fee() >= Int(4000)),
         # Make royalty payment
         If(
             purchase_txn.type_enum() == TxnType.AssetTransfer,
@@ -470,8 +467,6 @@ def royalty_free_move():
         # Must be set to app creator and less than the amount to move
         Assert(offer_auth.load() == administrator()),
         Assert(offer_amt.load() <= asset_amt),
-        # Txn fee must cover the cost of the move
-        Assert(Txn.fee() >= Int(2000)),
         # Delete the offer
         update_offered(
             from_acct,
