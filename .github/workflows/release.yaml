@@ -2,10 +2,8 @@ name: Release
 
 on:
   push:
-
-  # release:
-  #   types:
-  #     - published
+    tags:
+      - "v*.*.*"
 
 jobs:
   release:
@@ -46,5 +44,10 @@ jobs:
       - name: Compile contracts
         run: ./build.sh
 
-      # TODO: copy files to release
-      - run: ls assets
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            assets/enforcer_abi.json
+            assets/enforcer_approval.teal
+            assets/enforcer_clear.teal
