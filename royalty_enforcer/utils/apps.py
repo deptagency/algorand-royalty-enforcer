@@ -16,17 +16,17 @@ from algosdk.future.transaction import (
 from algosdk.abi import Interface
 from algosdk.logic import get_application_address
 from algosdk.v2client.algod import AlgodClient
-from royalty_arc18.contracts.enforcer import (
+from royalty_enforcer.contracts.enforcer import (
     compile_enforcer_approval,
     compile_enforcer_clear,
 )
-from royalty_arc18.contracts.marketplace import (
+from royalty_enforcer.contracts.marketplace import (
     compile_marketplace_approval,
     compile_marketplace_clear,
 )
-from royalty_arc18.utils.abi import getMethod
-from royalty_arc18.utils.accounts import Account
-from royalty_arc18.utils.transactions import ZERO_ADDR, waitForTransaction
+from royalty_enforcer.utils.abi import getMethod
+from royalty_enforcer.utils.accounts import Account
+from royalty_enforcer.utils.transactions import ZERO_ADDR, waitForTransaction
 
 
 with open("assets/enforcer_abi.json") as f:

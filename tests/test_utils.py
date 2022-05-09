@@ -4,8 +4,8 @@ from algosdk import encoding
 from algosdk.kmd import KMDClient
 from algosdk.v2client.algod import AlgodClient
 
-from royalty_arc18.utils.clients import getAlgodClient, getKmdClient
-from royalty_arc18.utils.accounts import getGenesisAccounts
+from royalty_enforcer.utils.clients import getAlgodClient, getKmdClient
+from royalty_enforcer.utils.accounts import getGenesisAccounts
 
 
 def test_getAlgodClient():

@@ -10,7 +10,7 @@ from algosdk.future.transaction import PaymentTxn, Transaction, assign_group_id
 from algosdk.kmd import KMDClient
 from algosdk.mnemonic import from_private_key, to_private_key
 from algosdk.v2client.algod import AlgodClient
-from royalty_arc18.utils.transactions import waitForTransaction
+from royalty_enforcer.utils.transactions import waitForTransaction
 
 
 class Account:

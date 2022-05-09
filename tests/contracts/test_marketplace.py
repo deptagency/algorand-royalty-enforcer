@@ -1,6 +1,6 @@
 from algosdk.encoding import is_valid_address
-from royalty_arc18.utils.accounts import getBalances, getTemporaryAccount
-from royalty_arc18.utils.apps import (
+from royalty_enforcer.utils.accounts import getBalances, getTemporaryAccount
+from royalty_enforcer.utils.apps import (
     deployEnforcer,
     deployMarketplace,
     getAppGlobalState,
@@ -8,8 +8,8 @@ from royalty_arc18.utils.apps import (
     marketplaceListNFT,
     setEnforcerPolicy,
 )
-from royalty_arc18.utils.assets import mintNFT
-from royalty_arc18.utils.clients import getAlgodClient, getKmdClient
+from royalty_enforcer.utils.assets import mintNFT
+from royalty_enforcer.utils.clients import getAlgodClient, getKmdClient
 
 
 def test_deploy_marketplace():

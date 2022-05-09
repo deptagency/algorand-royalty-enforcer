@@ -1,5 +1,5 @@
-from royalty_arc18.utils.accounts import getBalances, getTemporaryAccount
-from royalty_arc18.utils.apps import (
+from royalty_enforcer.utils.accounts import getBalances, getTemporaryAccount
+from royalty_enforcer.utils.apps import (
     deployEnforcer,
     enforcerRoyaltyFreeMove,
     enforcerTransfer,
@@ -11,9 +11,9 @@ from royalty_arc18.utils.apps import (
     setEnforcerOffer,
     setEnforcerPolicy,
 )
-from royalty_arc18.utils.assets import mintNFT, optInToNFT
-from royalty_arc18.utils.clients import getAlgodClient, getKmdClient
-from royalty_arc18.utils.transactions import ZERO_ADDR
+from royalty_enforcer.utils.assets import mintNFT, optInToNFT
+from royalty_enforcer.utils.clients import getAlgodClient, getKmdClient
+from royalty_enforcer.utils.transactions import ZERO_ADDR
 
 
 def test_create_enforcer():

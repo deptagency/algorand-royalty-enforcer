@@ -4,8 +4,8 @@ from algosdk.atomic_transaction_composer import (
 )
 from algosdk.future.transaction import AssetCreateTxn, AssetTransferTxn
 from algosdk.v2client.algod import AlgodClient
-from royalty_arc18.utils.accounts import Account
-from royalty_arc18.utils.transactions import waitForTransaction
+from royalty_enforcer.utils.accounts import Account
+from royalty_enforcer.utils.transactions import waitForTransaction
 
 
 def mintNFT(client: AlgodClient, creator: Account, enforcer_address: str) -> int:
