@@ -51,3 +51,5 @@ jobs:
             assets/enforcer_abi.json
             assets/enforcer_approval.teal
             assets/enforcer_clear.teal
+            assets/enforcer_placeholder_approval.teal
+            assets/enforcer_placeholder_clear.teal
