@@ -182,6 +182,329 @@
       "returns": {
         "type": "address"
       }
+    },
+    {
+      "name": "asset_create",
+      "args": [
+        {
+          "type": "uint64",
+          "name": "Total"
+        },
+        {
+          "type": "uint32",
+          "name": "Decimals"
+        },
+        {
+          "type": "bool",
+          "name": "DefaultFrozen"
+        },
+        {
+          "type": "string",
+          "name": "UnitName"
+        },
+        {
+          "type": "string",
+          "name": "AssetName"
+        },
+        {
+          "type": "string",
+          "name": "URL"
+        },
+        {
+          "type": "[]byte",
+          "name": "MetaDataHash"
+        },
+        {
+          "type": "address",
+          "name": "ManagerAddr"
+        },
+        {
+          "type": "address",
+          "name": "ReserveAddr"
+        },
+        {
+          "type": "address",
+          "name": "FreezeAddr"
+        },
+        {
+          "type": "address",
+          "name": "ClawbackAddr"
+        }
+      ],
+      "returns": {
+        "type": "uint64"
+      }
+    },
+    {
+      "name": "asset_config",
+      "args": [
+        {
+          "type": "asset",
+          "name": "ConfigAsset"
+        },
+        {
+          "type": "uint64",
+          "name": "Total"
+        },
+        {
+          "type": "uint32",
+          "name": "Decimals"
+        },
+        {
+          "type": "bool",
+          "name": "DefaultFrozen"
+        },
+        {
+          "type": "string",
+          "name": "UnitName"
+        },
+        {
+          "type": "string",
+          "name": "AssetName"
+        },
+        {
+          "type": "string",
+          "name": "URL"
+        },
+        {
+          "type": "[]byte",
+          "name": "MetaDataHash"
+        },
+        {
+          "type": "address",
+          "name": "ManagerAddr"
+        },
+        {
+          "type": "address",
+          "name": "ReserveAddr"
+        },
+        {
+          "type": "address",
+          "name": "FreezeAddr"
+        },
+        {
+          "type": "address",
+          "name": "ClawbackAddr"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "asset_transfer",
+      "args": [
+        {
+          "type": "asset",
+          "name": "XferAsset"
+        },
+        {
+          "type": "uint64",
+          "name": "AssetAmount"
+        },
+        {
+          "type": "account",
+          "name": "AssetSender"
+        },
+        {
+          "type": "account",
+          "name": "AssetReceiver"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "asset_freeze",
+      "args": [
+        {
+          "type": "asset",
+          "name": "FreezeAsset"
+        },
+        {
+          "type": "account",
+          "name": "FreezeAccount"
+        },
+        {
+          "type": "bool",
+          "name": "AssetFrozen"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "is_asset_frozen",
+      "args": [
+        {
+          "type": "asset",
+          "name": "FreezeAsset"
+        },
+        {
+          "type": "account",
+          "name": "FreezeAccount"
+        }
+      ],
+      "returns": {
+        "type": "bool"
+      }
+    },
+    {
+      "name": "asset_destroy",
+      "args": [
+        {
+          "type": "asset",
+          "name": "DestroyAsset"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "get_total",
+      "readonly": true,
+      "args": [
+        {
+          "type": "asset",
+          "name": "Asset"
+        }
+      ],
+      "returns": {
+        "type": "uint64"
+      }
+    },
+    {
+      "name": "get_decimals",
+      "readonly": true,
+      "args": [
+        {
+          "type": "asset",
+          "name": "Asset"
+        }
+      ],
+      "returns": {
+        "type": "uint32"
+      }
+    },
+    {
+      "name": "get_default_frozen",
+      "readonly": true,
+      "args": [
+        {
+          "type": "asset",
+          "name": "Asset"
+        }
+      ],
+      "returns": {
+        "type": "bool"
+      }
+    },
+    {
+      "name": "get_unit_name",
+      "readonly": true,
+      "args": [
+        {
+          "type": "asset",
+          "name": "Asset"
+        }
+      ],
+      "returns": {
+        "type": "string"
+      }
+    },
+    {
+      "name": "get_asset_name",
+      "readonly": true,
+      "args": [
+        {
+          "type": "asset",
+          "name": "Asset"
+        }
+      ],
+      "returns": {
+        "type": "string"
+      }
+    },
+    {
+      "name": "get_url",
+      "readonly": true,
+      "args": [
+        {
+          "type": "asset",
+          "name": "Asset"
+        }
+      ],
+      "returns": {
+        "type": "string"
+      }
+    },
+    {
+      "name": "get_metadata_hash",
+      "readonly": true,
+      "args": [
+        {
+          "type": "asset",
+          "name": "Asset"
+        }
+      ],
+      "returns": {
+        "type": "[]byte"
+      }
+    },
+    {
+      "name": "get_manager_addr",
+      "readonly": true,
+      "args": [
+        {
+          "type": "asset",
+          "name": "Asset"
+        }
+      ],
+      "returns": {
+        "type": "address"
+      }
+    },
+    {
+      "name": "get_reserve_addr",
+      "readonly": true,
+      "args": [
+        {
+          "type": "asset",
+          "name": "Asset"
+        }
+      ],
+      "returns": {
+        "type": "address"
+      }
+    },
+    {
+      "name": "get_freeze_addr",
+      "readonly": true,
+      "args": [
+        {
+          "type": "asset",
+          "name": "Asset"
+        }
+      ],
+      "returns": {
+        "type": "address"
+      }
+    },
+    {
+      "name": "get_clawback_addr",
+      "readonly": true,
+      "args": [
+        {
+          "type": "asset",
+          "name": "Asset"
+        }
+      ],
+      "returns": {
+        "type": "address"
+      }
     }
   ]
 }
