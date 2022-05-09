@@ -1,18 +1,16 @@
-# ARC-18 Implementation
+# Algorand Royalty Enforcer Implementation
 
-Based on the example at https://github.com/algorand-devrel/royalty/
+This is an implementation of ARC-18 and (partial) ARC-20. It is based on the example at https://github.com/algorand-devrel/royalty/. This implementation adds various tests and some additional checks.
 
-Also see the ARC-18 pull request at https://github.com/algorandfoundation/ARCs/pull/70
-
-And the ARC-18 spec at https://github.com/barnjamin/ARCs/blob/royalty/ARCs/arc-0018.md
-
-This implementation adds various tests and some additional checks.
+- [ARC-18 PR](https://github.com/algorandfoundation/ARCs/pull/70) / [ARC-18](https://github.com/barnjamin/ARCs/blob/royalty/ARCs/arc-0018.md)
+- [ARC-20 PR](https://github.com/algorandfoundation/ARCs/pull/91) / [ARC-20](https://github.com/aldur/ARCs/blob/smartasa/ARCs/arc-00xx.md)
 
 TODO:
 
 - [x] Implement enforcer contract and tests
 - [x] Build script
 - [x] Setup automated deploy/release workflows
+- [x] Placeholder enforcer contract to match the ABI of ARC-18 and ARC-20
 - [ ] Implement marketplace contract for ALGO and generic ASA and tests
 - [ ] Perform third-party audits
 - [ ] Address any issues that come up from audits
