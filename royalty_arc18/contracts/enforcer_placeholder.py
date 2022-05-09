@@ -97,18 +97,18 @@ def approval():
                 Txn.application_args[0] == Selectors.royalty_free_move,
                 from_administrator,
             ),
-            Reject(),
+            Int(0),
         ],
         [
             And(Txn.application_args[0] == Selectors.set_policy, from_administrator),
-            Reject(),
+            Int(0),
         ],
         [
             And(
                 Txn.application_args[0] == Selectors.set_payment_asset,
                 from_administrator,
             ),
-            Reject(),
+            Int(0),
         ],
         [
             And(
@@ -117,15 +117,15 @@ def approval():
             ),
             set_administrator(),
         ],
-        [Txn.application_args[0] == Selectors.transfer, Reject()],
-        [Txn.application_args[0] == Selectors.offer, Reject()],
-        [Txn.application_args[0] == Selectors.get_offer, Reject()],
-        [Txn.application_args[0] == Selectors.get_policy, Reject()],
-        [Txn.application_args[0] == Selectors.asset_transfer, Reject()],
-        [Txn.application_args[0] == Selectors.asset_create, Reject()],
-        [Txn.application_args[0] == Selectors.asset_config, Reject()],
-        [Txn.application_args[0] == Selectors.asset_destroy, Reject()],
-        [Txn.application_args[0] == Selectors.asset_freeze, Reject()],
+        [Txn.application_args[0] == Selectors.transfer, Int(0)],
+        [Txn.application_args[0] == Selectors.offer, Int(0)],
+        [Txn.application_args[0] == Selectors.get_offer, Int(0)],
+        [Txn.application_args[0] == Selectors.get_policy, Int(0)],
+        [Txn.application_args[0] == Selectors.asset_transfer, Int(0)],
+        [Txn.application_args[0] == Selectors.asset_create, Int(0)],
+        [Txn.application_args[0] == Selectors.asset_config, Int(0)],
+        [Txn.application_args[0] == Selectors.asset_destroy, Int(0)],
+        [Txn.application_args[0] == Selectors.asset_freeze, Int(0)],
         [Txn.application_args[0] == Selectors.get_administrator, get_administrator()],
     )
 

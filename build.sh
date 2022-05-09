@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 echo "Building enforcer contract..."
 poetry run python royalty_arc18/contracts/enforcer.py
 
