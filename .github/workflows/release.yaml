@@ -37,8 +37,15 @@ jobs:
       - name: Install dependencies
         run: poetry install
 
+      - name: Configure git
+        run: |
+          git config --global user.name "GitHub bot"
+          git config --global user.email "bot@deptagency.com"
+
       - name: Bump version
-        run: poetry version ${{ github.event.release.tag_name }}
+        run: |
+          poetry version ${{ github.event.release.tag_name }}
+          git commit -m 'Bump version in pyproject.toml'
 
       # Disable tests for now, requires Algod+KMD to be available
       # - name: Run tests
