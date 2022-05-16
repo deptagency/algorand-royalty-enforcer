@@ -45,7 +45,7 @@ jobs:
       - name: Bump version
         run: |
           poetry version ${{ github.event.release.tag_name }}
-          git commit -m 'Bump version in pyproject.toml'
+          git commit -am 'Bump version in pyproject.toml'
 
       # Disable tests for now, requires Algod+KMD to be available
       # - name: Run tests
