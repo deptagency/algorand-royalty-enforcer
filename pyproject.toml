@@ -8,7 +8,7 @@ authors = ["DEPT <opensource@deptagency.com>"]
 python = "^3.10"
 py-algorand-sdk = "^1.12.0"
 # Use latest commit on feature/abi branch
-pyteal = { git = "https://github.com/algorand/pyteal.git", rev = "11f970a3" }
+pyteal = { git = "https://github.com/algorand/pyteal.git", rev = "ed6f0e2f" }
 pytest-xdist = "^2.5.0"
 
 [tool.poetry.dev-dependencies]

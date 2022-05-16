@@ -188,43 +188,43 @@
       "args": [
         {
           "type": "uint64",
-          "name": "Total"
+          "name": "total"
         },
         {
           "type": "uint32",
-          "name": "Decimals"
+          "name": "decimals"
         },
         {
           "type": "bool",
-          "name": "DefaultFrozen"
+          "name": "default_frozen"
         },
         {
           "type": "string",
-          "name": "UnitName"
+          "name": "unit_name"
         },
         {
           "type": "string",
-          "name": "AssetName"
+          "name": "asset_name"
         },
         {
           "type": "string",
-          "name": "URL"
+          "name": "url"
         },
         {
-          "type": "[]byte",
-          "name": "MetaDataHash"
-        },
-        {
-          "type": "address",
-          "name": "ManagerAddr"
+          "type": "byte[]",
+          "name": "metadata_hash"
         },
         {
           "type": "address",
-          "name": "ReserveAddr"
+          "name": "manager_addr"
         },
         {
           "type": "address",
-          "name": "FreezeAddr"
+          "name": "reserve_addr"
+        },
+        {
+          "type": "address",
+          "name": "freeze_addr"
         },
         {
           "type": "address",
@@ -240,51 +240,51 @@
       "args": [
         {
           "type": "asset",
-          "name": "ConfigAsset"
+          "name": "config_asset"
         },
         {
           "type": "uint64",
-          "name": "Total"
+          "name": "total"
         },
         {
           "type": "uint32",
-          "name": "Decimals"
+          "name": "decimals"
         },
         {
           "type": "bool",
-          "name": "DefaultFrozen"
+          "name": "default_frozen"
         },
         {
           "type": "string",
-          "name": "UnitName"
+          "name": "unit_name"
         },
         {
           "type": "string",
-          "name": "AssetName"
+          "name": "asset_name"
         },
         {
           "type": "string",
-          "name": "URL"
+          "name": "url"
         },
         {
-          "type": "[]byte",
-          "name": "MetaDataHash"
-        },
-        {
-          "type": "address",
-          "name": "ManagerAddr"
+          "type": "byte[]",
+          "name": "metadata_hash"
         },
         {
           "type": "address",
-          "name": "ReserveAddr"
+          "name": "manager_addr"
         },
         {
           "type": "address",
-          "name": "FreezeAddr"
+          "name": "reserve_addr"
         },
         {
           "type": "address",
-          "name": "ClawbackAddr"
+          "name": "freeze_addr"
+        },
+        {
+          "type": "address",
+          "name": "clawback_addr"
         }
       ],
       "returns": {
@@ -296,19 +296,19 @@
       "args": [
         {
           "type": "asset",
-          "name": "XferAsset"
+          "name": "xfer_asset"
         },
         {
           "type": "uint64",
-          "name": "AssetAmount"
+          "name": "asset_amount"
         },
         {
           "type": "account",
-          "name": "AssetSender"
+          "name": "asset_sender"
         },
         {
           "type": "account",
-          "name": "AssetReceiver"
+          "name": "asset_receiver"
         }
       ],
       "returns": {
@@ -320,15 +320,15 @@
       "args": [
         {
           "type": "asset",
-          "name": "FreezeAsset"
+          "name": "freeze_asset"
         },
         {
           "type": "account",
-          "name": "FreezeAccount"
+          "name": "freeze_account"
         },
         {
           "type": "bool",
-          "name": "AssetFrozen"
+          "name": "asset_frozen"
         }
       ],
       "returns": {
@@ -340,11 +340,11 @@
       "args": [
         {
           "type": "asset",
-          "name": "FreezeAsset"
+          "name": "freeze_asset"
         },
         {
           "type": "account",
-          "name": "FreezeAccount"
+          "name": "freeze_account"
         }
       ],
       "returns": {
@@ -356,7 +356,7 @@
       "args": [
         {
           "type": "asset",
-          "name": "DestroyAsset"
+          "name": "destroy_asset"
         }
       ],
       "returns": {
@@ -369,7 +369,7 @@
       "args": [
         {
           "type": "asset",
-          "name": "Asset"
+          "name": "asset"
         }
       ],
       "returns": {
@@ -382,7 +382,7 @@
       "args": [
         {
           "type": "asset",
-          "name": "Asset"
+          "name": "asset"
         }
       ],
       "returns": {
@@ -395,7 +395,7 @@
       "args": [
         {
           "type": "asset",
-          "name": "Asset"
+          "name": "asset"
         }
       ],
       "returns": {
@@ -408,7 +408,7 @@
       "args": [
         {
           "type": "asset",
-          "name": "Asset"
+          "name": "asset"
         }
       ],
       "returns": {
@@ -421,7 +421,7 @@
       "args": [
         {
           "type": "asset",
-          "name": "Asset"
+          "name": "asset"
         }
       ],
       "returns": {
@@ -434,7 +434,7 @@
       "args": [
         {
           "type": "asset",
-          "name": "Asset"
+          "name": "asset"
         }
       ],
       "returns": {
@@ -447,11 +447,11 @@
       "args": [
         {
           "type": "asset",
-          "name": "Asset"
+          "name": "asset"
         }
       ],
       "returns": {
-        "type": "[]byte"
+        "type": "byte[]"
       }
     },
     {
@@ -460,7 +460,7 @@
       "args": [
         {
           "type": "asset",
-          "name": "Asset"
+          "name": "asset"
         }
       ],
       "returns": {
@@ -473,7 +473,7 @@
       "args": [
         {
           "type": "asset",
-          "name": "Asset"
+          "name": "asset"
         }
       ],
       "returns": {
@@ -486,7 +486,7 @@
       "args": [
         {
           "type": "asset",
-          "name": "Asset"
+          "name": "asset"
         }
       ],
       "returns": {
@@ -499,7 +499,7 @@
       "args": [
         {
           "type": "asset",
-          "name": "Asset"
+          "name": "asset"
         }
       ],
       "returns": {

@@ -18,24 +18,47 @@ class Constants:
 
 
 class Selectors:
+    # ARC-18 modifiers
     set_administrator = MethodSignature("set_administrator(address)void")
-    get_administrator = MethodSignature("get_administrator()address")
-
     offer = MethodSignature("offer(asset,uint64,address,uint64,address)void")
-    get_offer = MethodSignature("get_offer(uint64,account)(address,uint64)")
-
     set_policy = MethodSignature("set_policy(uint64,address)void")
-    get_policy = MethodSignature("get_policy()(address,uint64)")
-
     set_payment_asset = MethodSignature("set_payment_asset(asset,bool)void")
-
     transfer = MethodSignature(
         "transfer(asset,uint64,account,account,account,txn,asset,uint64)void"
     )
-
     royalty_free_move = MethodSignature(
         "royalty_free_move(asset,uint64,account,account,uint64)void"
     )
+
+    # ARC-18 readonly
+    get_policy = MethodSignature("get_policy()(address,uint64)")
+    get_offer = MethodSignature("get_offer(uint64,account)(address,uint64)")
+    get_administrator = MethodSignature("get_administrator()address")
+
+    # ARC-20 modifiers
+    asset_create = MethodSignature(
+        "asset_create(uint64,uint32,bool,string,string,string,byte[],address,address,address,address)uint64"
+    )
+    asset_config = MethodSignature(
+        "asset_config(asset,uint64,uint32,bool,string,string,string,byte[],address,address,address,address)void"
+    )
+    asset_transfer = MethodSignature("asset_transfer(asset,uint64,account,account)void")
+    asset_freeze = MethodSignature("asset_freeze(asset,account,bool)void")
+    asset_destroy = MethodSignature("asset_destroy(asset)void")
+
+    # ARC-20 readonly
+    get_asset_name = MethodSignature("get_asset_name(asset)string")
+    get_clawback_addr = MethodSignature("get_clawback_addr(asset)address")
+    get_decimals = MethodSignature("get_decimals(asset)uint32")
+    get_default_frozen = MethodSignature("get_default_frozen(asset)bool")
+    get_freeze_addr = MethodSignature("get_freeze_addr(asset)address")
+    get_manager_addr = MethodSignature("get_manager_addr(asset)address")
+    get_metadata_hash = MethodSignature("get_metadata_hash(asset)byte[]")
+    get_reserve_addr = MethodSignature("get_reserve_addr(asset)address")
+    get_total = MethodSignature("get_total(asset)uint64")
+    get_unit_name = MethodSignature("get_unit_name(asset)string")
+    get_url = MethodSignature("get_url(asset)string")
+    is_asset_frozen = MethodSignature("is_asset_frozen(asset,account)bool")
 
 
 # region Administrator
@@ -148,7 +171,11 @@ def get_offer():
         Assert(stored_offer.hasValue()),
         (addr := abi.Address()).decode(extract_offer_auth(stored_offer.value())),
         (amt := abi.Uint64()).set(extract_offer_amount(stored_offer.value())),
-        (ret := abi.Tuple(abi.AddressTypeSpec(), abi.Uint64TypeSpec())).set(addr, amt),
+        (
+            ret := abi.Tuple(
+                abi.TupleTypeSpec(abi.AddressTypeSpec(), abi.Uint64TypeSpec())
+            )
+        ).set(addr, amt),
         abi.MethodReturn(ret),
         Int(1),
     )
@@ -190,7 +217,11 @@ def get_policy():
     return Seq(
         (addr := abi.Address()).decode(get_royalty_receiver()),
         (amt := abi.Uint64()).set(get_royalty_basis()),
-        (ret := abi.Tuple(abi.AddressTypeSpec(), abi.Uint64TypeSpec())).set(addr, amt),
+        (
+            ret := abi.Tuple(
+                abi.TupleTypeSpec(abi.AddressTypeSpec(), abi.Uint64TypeSpec())
+            )
+        ).set(addr, amt),
         abi.MethodReturn(ret),
         Int(1),
     )
