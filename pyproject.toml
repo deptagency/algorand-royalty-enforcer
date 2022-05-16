@@ -1,6 +1,6 @@
 [tool.poetry]
-name = "royalty-arc18"
-version = "0.1.0"
+name = "royalty_enforcer"
+version = "0.1.3"
 description = ""
 authors = ["DEPT <opensource@deptagency.com>"]
 

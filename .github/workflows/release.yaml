@@ -37,6 +37,9 @@ jobs:
       - name: Install dependencies
         run: poetry install
 
+      - name: Bump version
+        run: poetry version ${{ github.event.release.tag_name }}
+
       # Disable tests for now, requires Algod+KMD to be available
       # - name: Run tests
       #   run: poetry run pytest
@@ -53,3 +56,9 @@ jobs:
             assets/enforcer_clear.teal
             assets/enforcer_placeholder_approval.teal
             assets/enforcer_placeholder_clear.teal
+
+      - name: Push updates to repo
+        run: git push
+        env:
+          # The secret is passed automatically. Nothing to configure.
+          github-token: ${{ secrets.GITHUB_TOKEN }}

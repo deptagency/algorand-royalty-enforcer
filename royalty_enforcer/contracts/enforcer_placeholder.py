@@ -10,7 +10,7 @@ def approval():
         # Only support policy and administrator actions until TEAL v7
         [
             And(Txn.application_args[0] == Selectors.set_policy, from_administrator),
-            set_policy,
+            set_policy(),
         ],
         [Txn.application_args[0] == Selectors.get_policy, get_policy()],
         [
