@@ -11,11 +11,12 @@ TODO:
 - [x] Build script
 - [x] Setup automated deploy/release workflows
 - [x] Placeholder enforcer contract to match the ABI of ARC-18 and ARC-20
+- [ ] Implement full ARC-20 ABI
 - [ ] Implement marketplace contract for ALGO and generic ASA and tests
 - [ ] Perform third-party audits
 - [ ] Address any issues that come up from audits
 - [ ] Additional test cases
-- [ ] Finalize contract implementations
+- [ ] Finalize contract implementations and make them immutable
 
 ## Requirements
 
