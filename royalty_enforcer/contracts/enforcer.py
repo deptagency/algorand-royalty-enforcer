@@ -203,8 +203,9 @@ def set_policy():
         (r_recv := abi.Address()).decode(Txn.application_args[2]),
         (r_basis_stored := App.globalGetEx(Int(0), Keys.royalty_basis)),
         (r_recv_stored := App.globalGetEx(Int(0), Keys.royalty_receiver)),
-        Assert(Not(r_basis_stored.hasValue())),
-        Assert(Not(r_recv_stored.hasValue())),
+        # Uncomment to make policy immutable
+        # Assert(Not(r_basis_stored.hasValue())),
+        # Assert(Not(r_recv_stored.hasValue())),
         Assert(r_basis.get() <= Int(Constants.basis_point_multiplier)),
         App.globalPut(Keys.royalty_basis, r_basis.get()),
         App.globalPut(Keys.royalty_receiver, r_recv.get()),
