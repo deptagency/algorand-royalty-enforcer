@@ -3,7 +3,7 @@
 This is an implementation of ARC-18 and (partial) ARC-20. It is based on the example at https://github.com/algorand-devrel/royalty/. This implementation adds various tests and some additional checks.
 
 - [ARC-18 PR](https://github.com/algorandfoundation/ARCs/pull/70) / [ARC-18](https://github.com/barnjamin/ARCs/blob/royalty/ARCs/arc-0018.md)
-- [ARC-20 PR](https://github.com/algorandfoundation/ARCs/pull/91) / [ARC-20](https://github.com/aldur/ARCs/blob/smartasa/ARCs/arc-00xx.md)
+- [ARC-20 PR](https://github.com/algorandfoundation/ARCs/pull/91) / [ARC-20](https://github.com/algorandfoundation/ARCs/blob/main/ARCs/arc-0020.md)
 
 TODO:
 
@@ -11,6 +11,7 @@ TODO:
 - [x] Build script
 - [x] Setup automated deploy/release workflows
 - [x] Placeholder enforcer contract to match the ABI of ARC-18 and ARC-20
+- [ ] Update according to latest ARC-18
 - [ ] Implement relevant ARC-20 ABI
 - [ ] Implement marketplace contract for ALGO and generic ASA and tests
 - [ ] Perform third-party audits
