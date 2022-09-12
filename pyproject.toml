@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "royalty_enforcer"
-version = "v0.1.5"
+version = "v0.1.6"
 description = ""
 authors = ["DEPT <opensource@deptagency.com>"]
 
