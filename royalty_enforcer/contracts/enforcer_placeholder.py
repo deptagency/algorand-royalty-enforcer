@@ -5,18 +5,20 @@ from royalty_enforcer.contracts.enforcer import *
 
 def approval():
     from_administrator = Txn.sender() == administrator()
+    from_creator = Txn.sender() == Global.creator_address()
+    from_admin_or_creator = Or(from_administrator, from_creator)
 
     action_router = Cond(
         # Only support policy and administrator actions until TEAL v7
         [
-            And(Txn.application_args[0] == Selectors.set_policy, from_administrator),
+            And(Txn.application_args[0] == Selectors.set_policy, from_admin_or_creator),
             set_policy(),
         ],
         [Txn.application_args[0] == Selectors.get_policy, get_policy()],
         [
             And(
                 Txn.application_args[0] == Selectors.set_administrator,
-                from_administrator,
+                from_admin_or_creator,
             ),
             set_administrator(),
         ],
@@ -50,11 +52,11 @@ def approval():
         [Txn.application_id() == Int(0), Return(put_administrator(Txn.sender()))],
         [
             Txn.on_completion() == OnComplete.DeleteApplication,
-            Return(from_administrator),
+            Return(from_creator),
         ],
         [
             Txn.on_completion() == OnComplete.UpdateApplication,
-            Return(from_administrator),
+            Return(from_creator),
         ],
         [Txn.on_completion() == OnComplete.OptIn, Approve()],
         [Txn.on_completion() == OnComplete.CloseOut, Approve()],
