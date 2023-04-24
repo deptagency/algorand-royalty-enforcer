@@ -1,3 +1,5 @@
+> Archived as implementation now lives in a private repository. May make it public again in the future.
+
 # Algorand Royalty Enforcer Implementation
 
 This is an implementation of ARC-18 and (partial) ARC-20. It is based on the example at https://github.com/algorand-devrel/royalty/. This implementation adds various tests and some additional checks.
